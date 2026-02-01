@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fuzzy History Search</title>
+    <link rel="stylesheet" href="ui.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="top">
+        <div class="brand">
+          <div class="logo">FH</div>
+          <div class="brand-text">
+            <div class="title">Fuzzy History Search</div>
+            <div class="subtitle">History + active tab, ranked fast</div>
+          </div>
+        </div>
+        <div class="search">
+          <input
+            id="query"
+            type="text"
+            placeholder="Search history"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <div class="key">Cmd+E</div>
+        </div>
+      </header>
+
+      <main class="main">
+        <div
+          id="results"
+          class="results"
+          role="listbox"
+          aria-label="Search results"
+        ></div>
+        <div id="empty" class="empty">No results</div>
+      </main>
+
+      <footer class="footer">
+        Enter: open | Cmd+Enter: new tab | Shift+Enter: background tab | Esc:
+        close
+      </footer>
+    </div>
+
+    <script src="ui.js"></script>
+  </body>
+</html>
