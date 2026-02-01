@@ -14,6 +14,7 @@
 *.zip
 *.crx
 *.xpi
+web-ext-artifacts/
 
 # Claude
 .claude/
