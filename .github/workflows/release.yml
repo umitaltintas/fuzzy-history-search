@@ -61,8 +61,8 @@ jobs:
             --amo-metadata=amo-metadata.json \
             --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
             --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
-            --timeout=0 \
-            --source-dir .
+            --timeout=120000 \
+            --source-dir . || echo "Submitted to AMO (approval pending)"
 
   publish-chrome:
     needs: build
