@@ -54,13 +54,14 @@ jobs:
 
       - run: npm install -g web-ext
 
-      - name: Sign for Firefox (listed)
+      - name: Submit to Firefox (listed)
         run: |
           web-ext sign \
             --channel=listed \
             --amo-metadata=amo-metadata.json \
             --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
             --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
+            --timeout=0 \
             --source-dir .
 
   publish-chrome:
