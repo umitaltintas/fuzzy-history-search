@@ -35,12 +35,20 @@ Chrome, manifest'teki `suggested_key` degerini baska bir eklentiyle cakisiyorsa 
 
 ### Firefox
 
+#### Imzali `.xpi` ile kurulum (onerilen)
+
+1. [Releases](https://github.com/umitaltintas/fuzzy-history-search/releases/latest) sayfasindan `.xpi` dosyasini indirin
+2. Firefox dosyayi otomatik olarak eklenti kurulum diyalogu ile acar
+3. **Add** (Ekle) butonuna tiklayin
+
+#### Gecici kurulum (gelistirici)
+
 1. Repoyu klonlayin veya ZIP olarak indirip cikartin
 2. Firefox'ta `about:debugging#/runtime/this-firefox` adresine gidin
 3. **Load Temporary Add-on** (Gecici Eklenti Yukle) butonuna tiklayin
 4. `fuzzy-history-search` klasorunun icindeki `manifest.json` dosyasini secin
 
-> **Not:** Firefox'ta gecici eklentiler tarayici kapatildiginda kaldililir. Kalici kurulum icin eklentinin imzalanmasi gerekir (`web-ext sign`).
+> **Not:** Gecici eklentiler tarayici kapatildiginda kaldirilir.
 
 #### Klavye kisayolu ayarlama (Firefox)
 
