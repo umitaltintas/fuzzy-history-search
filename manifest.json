@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Fuzzy History Search",
+  "version": "1.0.0",
+  "description": "VS Code style fuzzy history search via omnibox. Type 'h ' to activate.",
+  "permissions": ["history"],
+  "omnibox": {
+    "keyword": "h"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "fuzzy-history-search@example.com",
+      "strict_min_version": "91.0"
+    }
+  }
+}
