@@ -54,23 +54,19 @@ jobs:
 
       - run: npm install -g web-ext
 
-      - name: Sign for Firefox
+      - name: Sign for Firefox (listed)
         run: |
           web-ext sign \
-            --channel=unlisted \
+            --channel=listed \
+            --amo-metadata=amo-metadata.json \
             --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
             --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
             --source-dir .
 
-      - name: Upload signed xpi
-        uses: actions/upload-artifact@v4
-        with:
-          name: firefox-xpi
-          path: web-ext-artifacts/*.xpi
-
   publish-chrome:
     needs: build
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
@@ -114,19 +110,14 @@ jobs:
 
   github-release:
     needs: [publish-firefox, publish-chrome]
+    if: always() && needs.publish-firefox.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: extension-zip
 
-      - uses: actions/download-artifact@v4
-        with:
-          name: firefox-xpi
-
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            *.zip
-            *.xpi
+          files: "*.zip"
