@@ -1,0 +1,11 @@
+{
+  "version": {
+    "license": "MIT"
+  },
+  "categories": {
+    "firefox": ["search-tools"]
+  },
+  "summary": {
+    "en-US": "VS Code-style fuzzy search for your browser history. Type 'h ' in the address bar or press Cmd+E for instant overlay search."
+  }
+}
