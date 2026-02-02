@@ -14,26 +14,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - uses: oven-sh/setup-bun@v2
 
-      - run: npm ci
+      - run: bun install --frozen-lockfile
 
       - name: Typecheck
-        run: npm run typecheck
+        run: bun run typecheck
 
       - name: Lint
-        run: npm run lint
+        run: bun run lint
 
       - name: Test
-        run: npm run test
+        run: bun run test
 
       - name: Build
-        run: npm run build
+        run: bun run build
 
       - name: Web-ext lint
-        run: npx web-ext lint --source-dir dist --warnings-as-errors=false
+        run: bunx web-ext lint --source-dir dist --warnings-as-errors=false
 
   build:
     needs: lint
@@ -41,14 +39,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - uses: oven-sh/setup-bun@v2
 
-      - run: npm ci
+      - run: bun install --frozen-lockfile
 
       - name: Build extension
-        run: npm run build
+        run: bun run build
 
       - name: Create zip
         run: |
@@ -67,18 +63,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - uses: oven-sh/setup-bun@v2
 
-      - run: npm ci
+      - run: bun install --frozen-lockfile
 
       - name: Build extension
-        run: npm run build
+        run: bun run build
 
       - name: Submit to Firefox (listed)
         run: |
-          npx web-ext sign \
+          bunx web-ext sign \
             --channel=listed \
             --amo-metadata=amo-metadata.json \
             --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
