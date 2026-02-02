@@ -80,6 +80,20 @@ jobs:
             --timeout=15000 \
             --source-dir dist || echo "Submitted to AMO (approval pending)"
 
+      - name: Sign XPI (unlisted)
+        run: |
+          bunx web-ext sign \
+            --channel=unlisted \
+            --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
+            --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
+            --source-dir dist
+
+      - name: Upload XPI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-xpi
+          path: web-ext-artifacts/*.xpi
+
   publish-chrome:
     needs: build
     runs-on: ubuntu-latest
@@ -134,7 +148,13 @@ jobs:
         with:
           name: extension-zip
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: extension-xpi
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: "*.zip"
+          files: |
+            *.zip
+            *.xpi
