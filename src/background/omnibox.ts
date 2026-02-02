@@ -5,7 +5,7 @@ import { getActiveTabEntry } from "./history-cache";
 import { getQueryTokens, getTopEntries, mergeActiveResult, buildRecentList } from "./search";
 
 ext!.omnibox.setDefaultSuggestion({
-  description: "Fuzzy History Search: yazarak arama yapin",
+  description: "Fuzzy History Search: type to search",
 });
 
 let lastQueryLower = "";
@@ -19,7 +19,7 @@ function buildSuggestions(
 ): chrome.omnibox.SuggestResult[] {
   return entries.map((entry) => ({
     content: entry.url,
-    description: entry.isActive ? `Aktif: ${entry.description}` : entry.description,
+    description: entry.isActive ? `Active: ${entry.description}` : entry.description,
   }));
 }
 
