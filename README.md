@@ -1,103 +1,122 @@
 # Fuzzy History Search
 
-Tarayici gecmisinizde VS Code tarzinda fuzzy arama yapan bir tarayici eklentisi. Omnibox'tan `h ` yazarak veya klavye kisayolu ile aktive edilir.
+A browser extension that brings VS Code-style fuzzy search to your browsing history. Activate it by typing `h ` in the address bar or using a keyboard shortcut.
 
-## Ozellikler
+**[Website](https://umitaltintas.github.io/fuzzy-history-search/)** · **[Chrome Web Store](https://chromewebstore.google.com/detail/fuzzy-history-search/mmpijcdkoeomkbnfednbokgmhaaemhcg)** · **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/fuzzy-history-search/)**
 
-- **Omnibox entegrasyonu** — Adres cubuguna `h ` yazin, ardindan aramanizi yapin
-- **Overlay modu** — Herhangi bir sayfanin uzerine acilan arama paneli (Cmd+E / Ctrl+Shift+E)
-- **Popup pencere** — Overlay inject edilemeyen sayfalarda otomatik olarak ayri pencere acar
-- **Fuzzy eslestirme** — fzf tarzinda DP tabanli optimal karakter hizalamasi
-- **Akilli siralama** — Ziyaret sayisi, yakinlik, host eslesmesi ve boundary tespiti ile skorlama
-- **Aktif sekme destegi** — Su an acik olan sekme sonuclara dahil edilir
+![Popup Window](website/public/screenshots/popup.png)
 
-## Kurulum
+## Features
+
+- **Omnibox integration** — Type `h ` in the address bar, then enter your query
+- **Overlay mode** — A search panel that appears on top of any page (Cmd+E / Ctrl+Shift+E)
+- **Popup window** — Automatically opens a separate window when the overlay can't be injected
+- **Fuzzy matching** — fzf-style DP-based optimal character alignment
+- **Smart ranking** — Scoring based on visit count, recency, host match, and boundary detection
+- **Active tab support** — Currently open tabs are included in the results
+
+## Installation
 
 ### Chrome / Edge / Chromium
 
-1. Repoyu klonlayin veya ZIP olarak indirip cikartin:
+Install from the **[Chrome Web Store](https://chromewebstore.google.com/detail/fuzzy-history-search/mmpijcdkoeomkbnfednbokgmhaaemhcg)**.
+
+Or load manually:
+
+1. Clone the repo or download and extract the ZIP:
    ```
    git clone https://github.com/umitaltintas/fuzzy-history-search.git
    ```
-2. Chrome'da `chrome://extensions` adresine gidin
-3. Sag ust kosedeki **Developer mode** (Gelistirici modu) toggle'ini acin
-4. **Load unpacked** (Paketlenmemis oge yukle) butonuna tiklayin
-5. `fuzzy-history-search` klasorunu secin
-6. Eklenti listeye eklenir. Hata varsa detaylar bu sayfada gosterilir.
+2. Go to `chrome://extensions`
+3. Enable **Developer mode** (toggle in the top right)
+4. Click **Load unpacked**
+5. Select the `fuzzy-history-search` folder
 
-#### Klavye kisayolu ayarlama (Chrome)
+#### Setting a keyboard shortcut (Chrome)
 
-Chrome, manifest'teki `suggested_key` degerini baska bir eklentiyle cakisiyorsa otomatik atamayabilir. Elle ayarlamak icin:
+Chrome may not automatically assign the `suggested_key` if it conflicts with another extension. To set it manually:
 
-1. `chrome://extensions/shortcuts` adresine gidin
-2. **Fuzzy History Search** altindaki "Open fuzzy history search window" satirini bulun
-3. Kalem ikonuna tiklayip istediginiz kisayolu girin (onerilen: `Cmd+E` / `Ctrl+Shift+E`)
+1. Go to `chrome://extensions/shortcuts`
+2. Find "Open fuzzy history search window" under **Fuzzy History Search**
+3. Click the pencil icon and enter your preferred shortcut (recommended: `Cmd+E` / `Ctrl+Shift+E`)
 
 ### Firefox
 
-#### Imzali `.xpi` ile kurulum (onerilen)
+Install from **[Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/fuzzy-history-search/)**.
 
-1. [Releases](https://github.com/umitaltintas/fuzzy-history-search/releases/latest) sayfasindan `.xpi` dosyasini indirin
-2. Firefox dosyayi otomatik olarak eklenti kurulum diyalogu ile acar
-3. **Add** (Ekle) butonuna tiklayin
+Or install manually:
 
-#### Gecici kurulum (gelistirici)
+#### Signed `.xpi` (recommended)
 
-1. Repoyu klonlayin veya ZIP olarak indirip cikartin
-2. Firefox'ta `about:debugging#/runtime/this-firefox` adresine gidin
-3. **Load Temporary Add-on** (Gecici Eklenti Yukle) butonuna tiklayin
-4. `fuzzy-history-search` klasorunun icindeki `manifest.json` dosyasini secin
+1. Download the `.xpi` file from [Releases](https://github.com/umitaltintas/fuzzy-history-search/releases/latest)
+2. Firefox will automatically open the extension install dialog
+3. Click **Add**
 
-> **Not:** Gecici eklentiler tarayici kapatildiginda kaldirilir.
+#### Temporary installation (developers)
 
-#### Klavye kisayolu ayarlama (Firefox)
+1. Clone the repo or download and extract the ZIP
+2. Go to `about:debugging#/runtime/this-firefox`
+3. Click **Load Temporary Add-on**
+4. Select `manifest.json` inside the `fuzzy-history-search` folder
 
-1. `about:addons` adresine gidin
-2. Sag ust kosedeki disli ikonuna tiklayin
-3. **Manage Extension Shortcuts** (Eklenti Kisayollarini Yonet) secenegine tiklayin
-4. **Fuzzy History Search** altindaki kisayolu ayarlayin
+> **Note:** Temporary extensions are removed when the browser is closed.
 
-## Kullanim
+#### Setting a keyboard shortcut (Firefox)
+
+1. Go to `about:addons`
+2. Click the gear icon in the top right
+3. Select **Manage Extension Shortcuts**
+4. Set the shortcut under **Fuzzy History Search**
+
+## Usage
 
 ### Omnibox
 
-Adres cubuguna `h ` yazin (h + bosluk), ardindan aramanizi girin. Sonuclar omnibox dropdown'unda gosterilir.
+Type `h ` (h followed by a space) in the address bar, then enter your query. Results appear in the omnibox dropdown.
 
 ### Overlay / Popup
 
-Klavye kisayolu (varsayilan `Cmd+E` / `Ctrl+Shift+E`) ile arama panelini acin.
+Press the keyboard shortcut (default `Cmd+E` / `Ctrl+Shift+E`) to open the search panel.
 
-| Kisayol | Islem |
+| Shortcut | Action |
 |---|---|
-| Yazi yazma | Gecmiste arama |
-| `↑` `↓` | Sonuclar arasinda gezinme |
-| `Enter` | Secili sonucu mevcut sekmede ac |
-| `Cmd+Enter` / `Ctrl+Enter` | Yeni sekmede ac |
-| `Shift+Enter` | Arka plan sekmesinde ac |
-| `Esc` | Paneli kapat |
+| Type | Search history |
+| `↑` `↓` | Navigate results |
+| `Enter` | Open in current tab |
+| `Cmd+Enter` / `Ctrl+Enter` | Open in new tab |
+| `Shift+Enter` | Open in background tab |
+| `Esc` | Close panel |
 
-## Dosya Yapisi
+## File Structure
 
 ```
 fuzzy-history-search/
-├── manifest.json       # Eklenti yapilandirmasi (MV3)
-├── background.js       # Service worker: gecmis cache, fuzzy skorlama, omnibox
+├── manifest.json       # Extension configuration (MV3)
+├── background.js       # Service worker: history cache, fuzzy scoring, omnibox
 ├── icons/
 │   ├── icon-16.png
 │   ├── icon-48.png
 │   └── icon-96.png
 └── ui/
-    ├── index.html      # Popup pencere HTML
-    ├── ui.css           # Popup pencere stilleri
-    ├── ui.js            # Popup pencere mantigi
-    └── overlay.js       # Sayfa uzerine inject edilen overlay
+    ├── index.html      # Popup window HTML
+    ├── ui.css           # Popup window styles
+    ├── ui.js            # Popup window logic
+    └── overlay.js       # In-page overlay injected via content script
 ```
 
-## Izinler
+## Permissions
 
-| Izin | Neden |
+| Permission | Reason |
 |---|---|
-| `history` | Tarayici gecmisini okumak icin |
-| `tabs` | Aktif sekme bilgisi ve sekme acma/guncelleme icin |
-| `activeTab` | Kisayol tetiklendiginde aktif sekmeye overlay inject etmek icin |
-| `scripting` | Content script (overlay.js) inject etmek icin (MV3) |
+| `history` | Read browser history to provide search results |
+| `tabs` | Query active tab info and open/update tabs |
+| `activeTab` | Inject the overlay into the active tab when the shortcut is triggered |
+| `scripting` | Inject the content script (overlay.js) programmatically (MV3) |
+
+## Privacy
+
+This extension does **not** collect, transmit, or share any data. All processing happens locally on your device. See the full [Privacy Policy](https://umitaltintas.github.io/fuzzy-history-search/privacy/).
+
+## License
+
+[MIT](LICENSE)
