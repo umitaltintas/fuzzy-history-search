@@ -1,0 +1,114 @@
+---
+import KeyboardKey from "./KeyboardKey.astro";
+
+const steps = [
+  {
+    number: "1",
+    title: "Activate",
+    description:
+      'Type "h " in the address bar, press Cmd+E (Mac) / Ctrl+Shift+E (Windows), or click the toolbar icon.',
+  },
+  {
+    number: "2",
+    title: "Search",
+    description:
+      "Start typing. Fuzzy matching instantly filters through your entire browser history.",
+  },
+  {
+    number: "3",
+    title: "Navigate",
+    description:
+      "Use arrow keys to pick a result, press Enter to open it. That's it.",
+  },
+];
+
+const shortcuts = [
+  { keys: ["h", "Space"], description: "Activate omnibox search" },
+  {
+    keys: ["Cmd+E"],
+    keysAlt: ["Ctrl+Shift+E"],
+    description: "Open overlay / popup",
+  },
+  { keys: ["\u2191", "\u2193"], description: "Navigate results" },
+  { keys: ["Enter"], description: "Open selected page" },
+  { keys: ["Esc"], description: "Close overlay / popup" },
+  {
+    keys: ["Cmd+Shift+Enter"],
+    keysAlt: ["Ctrl+Shift+Enter"],
+    description: "Open in new tab",
+  },
+];
+---
+
+<section id="how-it-works" class="py-20 sm:py-28 bg-panel/50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold text-ink">
+        Up and running in seconds
+      </h2>
+      <p class="mt-4 text-lg text-muted max-w-2xl mx-auto">
+        No configuration needed. Install, and start searching.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      {
+        steps.map((step) => (
+          <div class="text-center">
+            <div class="w-12 h-12 rounded-full bg-brand text-white font-bold text-xl flex items-center justify-center mx-auto mb-4">
+              {step.number}
+            </div>
+            <h3 class="font-semibold text-ink text-lg mb-2">{step.title}</h3>
+            <p class="text-muted text-sm leading-relaxed">
+              {step.description}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="max-w-2xl mx-auto">
+      <h3 class="font-semibold text-ink text-lg mb-4 text-center">
+        Keyboard Shortcuts
+      </h3>
+      <div class="bg-panel rounded-2xl border border-outline overflow-hidden">
+        <table class="w-full text-sm">
+          <tbody>
+            {
+              shortcuts.map((shortcut, i) => (
+                <tr class:list={[i > 0 && "border-t border-outline"]}>
+                  <td class="px-5 py-3 text-muted">{shortcut.description}</td>
+                  <td class="px-5 py-3 text-right">
+                    <span class="inline-flex items-center gap-1 flex-wrap justify-end">
+                      {shortcut.keys.map((k, j) => (
+                        <>
+                          {j > 0 && (
+                            <span class="text-muted text-xs">+</span>
+                          )}
+                          <KeyboardKey key={k} />
+                        </>
+                      ))}
+                      {shortcut.keysAlt && (
+                        <>
+                          <span class="text-muted text-xs mx-1">/</span>
+                          {shortcut.keysAlt.map((k, j) => (
+                            <>
+                              {j > 0 && (
+                                <span class="text-muted text-xs">+</span>
+                              )}
+                              <KeyboardKey key={k} />
+                            </>
+                          ))}
+                        </>
+                      )}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

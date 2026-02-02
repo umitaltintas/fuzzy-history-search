@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<BaseLayout
+  title="Privacy Policy — Fuzzy History Search"
+  description="Fuzzy History Search does not collect, transmit, or share any personal data. All processing happens locally on your device."
+>
+  <Header />
+  <main class="py-20 sm:py-28">
+    <article class="max-w-3xl mx-auto px-4 sm:px-6 prose">
+      <h1 class="text-3xl sm:text-4xl font-bold text-ink mb-2">
+        Privacy Policy
+      </h1>
+      <p class="text-muted text-sm mb-10">Last updated: February 2, 2025</p>
+
+      <section class="space-y-8">
+        <div>
+          <h2 class="text-xl font-semibold text-ink mb-3">Overview</h2>
+          <p class="text-muted leading-relaxed">
+            Fuzzy History Search is a browser extension that searches your local
+            browsing history using fuzzy matching. Your privacy is important and
+            this extension is designed to operate entirely on your device.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-ink mb-3">Data Collection</h2>
+          <p class="text-muted leading-relaxed">
+            This extension does <strong class="text-ink">not</strong> collect, transmit,
+            store, or share any personal data or browsing information with any external
+            server, third party, or the extension developer.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-ink mb-3">Data Usage</h2>
+          <ul class="space-y-2 text-muted">
+            <li class="flex items-start gap-2">
+              <span class="text-green-600 mt-1 shrink-0">&#10003;</span>
+              <span>
+                <strong class="text-ink">Browser history</strong> is read locally
+                on your device solely to provide search results within the extension.
+              </span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-green-600 mt-1 shrink-0">&#10003;</span>
+              <span>
+                All processing happens entirely within your browser. No data ever
+                leaves your device.
+              </span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-green-600 mt-1 shrink-0">&#10003;</span>
+              <span>
+                No analytics, telemetry, or tracking of any kind is implemented.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-ink mb-3">Permissions</h2>
+          <div
+            class="bg-panel rounded-xl border border-outline overflow-hidden"
+          >
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-outline">
+                  <th class="px-5 py-3 text-left font-semibold text-ink"
+                    >Permission</th
+                  >
+                  <th class="px-5 py-3 text-left font-semibold text-ink"
+                    >Purpose</th
+                  >
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-outline">
+                  <td class="px-5 py-3">
+                    <code
+                      class="text-xs bg-bg-strong px-1.5 py-0.5 rounded font-mono"
+                      >history</code
+                    >
+                  </td>
+                  <td class="px-5 py-3 text-muted"
+                    >Read local browsing history to provide search results</td
+                  >
+                </tr>
+                <tr class="border-b border-outline">
+                  <td class="px-5 py-3">
+                    <code
+                      class="text-xs bg-bg-strong px-1.5 py-0.5 rounded font-mono"
+                      >tabs</code
+                    >
+                  </td>
+                  <td class="px-5 py-3 text-muted"
+                    >Query active tab info and open search results</td
+                  >
+                </tr>
+                <tr class="border-b border-outline">
+                  <td class="px-5 py-3">
+                    <code
+                      class="text-xs bg-bg-strong px-1.5 py-0.5 rounded font-mono"
+                      >activeTab</code
+                    >
+                  </td>
+                  <td class="px-5 py-3 text-muted"
+                    >Inject the overlay search panel into the current page</td
+                  >
+                </tr>
+                <tr>
+                  <td class="px-5 py-3">
+                    <code
+                      class="text-xs bg-bg-strong px-1.5 py-0.5 rounded font-mono"
+                      >scripting</code
+                    >
+                  </td>
+                  <td class="px-5 py-3 text-muted"
+                    >Programmatically inject the overlay script (Manifest V3)</td
+                  >
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-ink mb-3">
+            Third-Party Services
+          </h2>
+          <p class="text-muted leading-relaxed">
+            This extension does not use any third-party services, APIs, or SDKs.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-ink mb-3">Changes</h2>
+          <p class="text-muted leading-relaxed">
+            If this policy changes, the updated version will be posted at this
+            URL.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-ink mb-3">Contact</h2>
+          <p class="text-muted leading-relaxed">
+            If you have questions about this privacy policy, please open an
+            issue at:
+            <a
+              href="https://github.com/umitaltintas/fuzzy-history-search/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-brand hover:text-brand-deep transition-colors break-all"
+            >
+              github.com/umitaltintas/fuzzy-history-search/issues
+            </a>
+          </p>
+        </div>
+      </section>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

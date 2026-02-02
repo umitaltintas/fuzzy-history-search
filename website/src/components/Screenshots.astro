@@ -1,0 +1,50 @@
+---
+const screenshots = [
+  {
+    src: "/fuzzy-history-search/screenshots/popup.png",
+    alt: "Popup window with search results",
+    label: "Popup Window",
+  },
+  {
+    src: "/fuzzy-history-search/screenshots/overlay.png",
+    alt: "In-page overlay search panel",
+    label: "Overlay Panel",
+  },
+  {
+    src: "/fuzzy-history-search/screenshots/omnibox.png",
+    alt: "Omnibox search in address bar",
+    label: "Omnibox Search",
+  },
+];
+---
+
+<section class="py-20 sm:py-28">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold text-ink">See it in action</h2>
+      <p class="mt-4 text-lg text-muted max-w-2xl mx-auto">
+        Three modes, one consistent experience. Pick your favorite.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        screenshots.map((screenshot) => (
+          <div class="group">
+            <div class="rounded-2xl overflow-hidden border border-outline shadow-sm bg-panel group-hover:shadow-lg transition-shadow">
+              <img
+                src={screenshot.src}
+                alt={screenshot.alt}
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+            <p class="mt-3 text-center text-sm font-medium text-muted">
+              {screenshot.label}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

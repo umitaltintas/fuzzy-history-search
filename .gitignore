@@ -16,5 +16,10 @@
 *.xpi
 web-ext-artifacts/
 
+# Website
+website/node_modules/
+website/dist/
+website/.astro/
+
 # Claude
 .claude/

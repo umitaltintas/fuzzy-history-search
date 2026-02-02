@@ -1,0 +1,13 @@
+---
+interface Props {
+  key: string;
+}
+
+const { key } = Astro.props;
+---
+
+<kbd
+  class="inline-block px-2 py-0.5 text-xs font-mono font-medium bg-bg-strong text-muted rounded border border-outline shadow-sm"
+>
+  {key}
+</kbd>
