@@ -18,10 +18,22 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm install -g web-ext
+      - run: npm ci
 
-      - name: Lint extension
-        run: web-ext lint --source-dir . --warnings-as-errors=false
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Web-ext lint
+        run: npx web-ext lint --source-dir dist --warnings-as-errors=false
 
   build:
     needs: lint
@@ -29,12 +41,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - name: Build extension
+        run: npm run build
+
       - name: Create zip
         run: |
           VERSION=${GITHUB_REF_NAME#v}
-          zip -r fuzzy-history-search-${VERSION}.zip \
-            manifest.json background.js icons/ ui/ LICENSE \
-            -x "*.DS_Store"
+          cd dist && zip -r ../fuzzy-history-search-${VERSION}.zip . -x "*.DS_Store"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -52,17 +71,20 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm install -g web-ext
+      - run: npm ci
+
+      - name: Build extension
+        run: npm run build
 
       - name: Submit to Firefox (listed)
         run: |
-          web-ext sign \
+          npx web-ext sign \
             --channel=listed \
             --amo-metadata=amo-metadata.json \
             --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
             --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
             --timeout=120000 \
-            --source-dir . || echo "Submitted to AMO (approval pending)"
+            --source-dir dist || echo "Submitted to AMO (approval pending)"
 
   publish-chrome:
     needs: build

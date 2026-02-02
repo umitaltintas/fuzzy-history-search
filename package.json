@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node esbuild.config.ts --watch",
+    "build": "node esbuild.config.ts",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write 'src/**/*.{ts,css,html}'",
+    "format:check": "prettier --check 'src/**/*.{ts,css,html}'",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "package": "npm run build && web-ext build --source-dir dist --overwrite-dest"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "esbuild": "^0.27.2",
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "typescript-eslint": "^8.54.0",
+    "prettier": "^3.8.1",
+    "vitest": "^4.0.18",
+    "web-ext": "^9.2.0",
+    "chrome-types": "^0.1.415"
+  }
+}

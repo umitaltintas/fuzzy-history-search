@@ -1,73 +1,20 @@
-const isBrowserApi = typeof browser !== "undefined";
-const ext = isBrowserApi
-  ? browser
-  : typeof chrome !== "undefined"
-    ? chrome
-    : null;
+import { sendMessage, getFaviconUrl, formatHost, formatTimeAgo } from "../../shared/messaging";
+import type { SearchResult } from "../../shared/types";
 
-const queryInput = document.getElementById("query");
-const resultsEl = document.getElementById("results");
-const emptyEl = document.getElementById("empty");
+const queryInput = document.getElementById("query") as HTMLInputElement;
+const resultsEl = document.getElementById("results")!;
+const emptyEl = document.getElementById("empty")!;
 
 const params = new URLSearchParams(window.location.search);
 const openerWindowId = Number(params.get("opener"));
 
 const UI_LIMIT = 40;
-let items = [];
-let itemElements = [];
+let items: SearchResult[] = [];
+let itemElements: HTMLButtonElement[] = [];
 let selectedIndex = -1;
-let debounceTimer = null;
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-function sendMessage(message) {
-  if (!ext || !ext.runtime || !ext.runtime.sendMessage) {
-    return Promise.reject(new Error("Messaging unavailable"));
-  }
-
-  if (isBrowserApi) {
-    try {
-      return ext.runtime.sendMessage(message);
-    } catch (error) {
-      return Promise.reject(error);
-    }
-  }
-
-  return new Promise((resolve) => {
-    ext.runtime.sendMessage(message, resolve);
-  });
-}
-
-function getFaviconUrl(url) {
-  if (!url) return "";
-  return `https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(
-    url,
-  )}`;
-}
-
-function formatHost(url) {
-  try {
-    const parsed = new URL(url);
-    return parsed.host;
-  } catch {
-    return url;
-  }
-}
-
-function formatTimeAgo(timestamp) {
-  if (!timestamp) return "unknown";
-  const diff = Date.now() - timestamp;
-  const minute = 60000;
-  const hour = minute * 60;
-  const day = hour * 24;
-  const week = day * 7;
-
-  if (diff < minute) return "just now";
-  if (diff < hour) return `${Math.round(diff / minute)}m`;
-  if (diff < day) return `${Math.round(diff / hour)}h`;
-  if (diff < week) return `${Math.round(diff / day)}d`;
-  return `${Math.round(diff / week)}w`;
-}
-
-function updateSelection(index) {
+function updateSelection(index: number): void {
   if (!itemElements.length) {
     selectedIndex = -1;
     return;
@@ -88,7 +35,7 @@ function updateSelection(index) {
   });
 }
 
-function renderResults() {
+function renderResults(): void {
   resultsEl.textContent = "";
   itemElements = [];
 
@@ -172,15 +119,13 @@ function renderResults() {
   updateSelection(0);
 }
 
-function openEntry(item, disposition) {
+function openEntry(item: SearchResult, disposition: string): void {
   if (!item || !item.url) return;
   sendMessage({
     type: "open",
     url: item.url,
     disposition,
-    openerWindowId: Number.isFinite(openerWindowId)
-      ? openerWindowId
-      : null,
+    openerWindowId: Number.isFinite(openerWindowId) ? openerWindowId : null,
   })
     .catch(() => {})
     .finally(() => {
@@ -188,7 +133,7 @@ function openEntry(item, disposition) {
     });
 }
 
-function closeWindow() {
+function closeWindow(): void {
   sendMessage({ type: "close" })
     .catch(() => {})
     .finally(() => {
@@ -196,7 +141,7 @@ function closeWindow() {
     });
 }
 
-function handleKeydown(event) {
+function handleKeydown(event: KeyboardEvent): void {
   if (event.key === "ArrowDown") {
     event.preventDefault();
     updateSelection(selectedIndex + 1);
@@ -223,20 +168,18 @@ function handleKeydown(event) {
   }
 }
 
-function requestResults(query) {
+function requestResults(query: string): Promise<SearchResult[]> {
   return sendMessage({
     type: "search",
     query,
     limit: UI_LIMIT,
-    openerWindowId: Number.isFinite(openerWindowId)
-      ? openerWindowId
-      : null,
+    openerWindowId: Number.isFinite(openerWindowId) ? openerWindowId : null,
   })
-    .then((response) => response?.results || [])
+    .then((response) => (response as { results: SearchResult[] })?.results || [])
     .catch(() => []);
 }
 
-function scheduleSearch() {
+function scheduleSearch(): void {
   if (debounceTimer) {
     clearTimeout(debounceTimer);
   }

@@ -10,11 +10,17 @@
 *.swo
 *~
 
+# Dependencies
+node_modules/
+
 # Build artifacts
+dist/
 *.zip
 *.crx
 *.xpi
+*.tsbuildinfo
 web-ext-artifacts/
+.amo-upload-uuid
 
 # Website
 website/node_modules/

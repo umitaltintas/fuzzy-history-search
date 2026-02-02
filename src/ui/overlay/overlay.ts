@@ -1,9 +1,11 @@
+declare const browser: typeof chrome | undefined;
+
 (() => {
   const OVERLAY_ID = "fhs-overlay";
   const STYLE_ID = "fhs-overlay-style";
 
   if (document.getElementById(OVERLAY_ID)) {
-    const existingInput = document.getElementById("fhs-query");
+    const existingInput = document.getElementById("fhs-query") as HTMLInputElement | null;
     if (existingInput) {
       existingInput.focus();
       existingInput.select();
@@ -356,7 +358,8 @@
 
   const empty = document.createElement("div");
   empty.className = "fhs-empty";
-  empty.innerHTML = '<div style="font-size:28px;opacity:0.35">&#x1F50D;</div>No results found';
+  empty.innerHTML =
+    '<div style="font-size:28px;opacity:0.35">&#x1F50D;</div>No results found';
 
   const footer = document.createElement("div");
   footer.className = "fhs-footer";
@@ -376,34 +379,43 @@
   overlay.appendChild(panel);
   document.body.appendChild(overlay);
 
-  const previousActive = document.activeElement;
+  const previousActive = document.activeElement as HTMLElement | null;
   const previousOverflow = document.documentElement.style.overflow;
   document.documentElement.style.overflow = "hidden";
 
+  interface OverlayResult {
+    url: string;
+    title: string;
+    visitCount: number;
+    lastVisitTime: number;
+    isActive: boolean;
+  }
+
   const UI_LIMIT = 40;
-  let items = [];
-  let elements = [];
+  let items: OverlayResult[] = [];
+  let elements: HTMLButtonElement[] = [];
   let selectedIndex = -1;
-  let debounceTimer = null;
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null;
   let closed = false;
 
-  function sendMessage(message) {
+  function sendMessage(message: Record<string, unknown>): Promise<unknown> {
     if (isBrowserApi) {
-      return ext.runtime.sendMessage(message);
+      return ext!.runtime.sendMessage(message);
     }
     return new Promise((resolve) => {
-      ext.runtime.sendMessage(message, resolve);
+      (ext!.runtime.sendMessage as (message: unknown, callback: (response: unknown) => void) => void)(
+        message,
+        resolve,
+      );
     });
   }
 
-  function getFaviconUrl(url) {
+  function getFaviconUrl(url: string): string {
     if (!url) return "";
-    return `https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(
-      url,
-    )}`;
+    return `https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(url)}`;
   }
 
-  function formatHost(url) {
+  function formatHost(url: string): string {
     try {
       return new URL(url).host;
     } catch {
@@ -411,7 +423,7 @@
     }
   }
 
-  function formatTimeAgo(timestamp) {
+  function formatTimeAgo(timestamp: number): string {
     if (!timestamp) return "unknown";
     const diff = Date.now() - timestamp;
     const minute = 60000;
@@ -425,7 +437,7 @@
     return `${Math.round(diff / week)}w`;
   }
 
-  function updateSelection(index) {
+  function updateSelection(index: number): void {
     if (!elements.length) {
       selectedIndex = -1;
       return;
@@ -442,7 +454,7 @@
     });
   }
 
-  function renderResults() {
+  function renderResults(): void {
     results.textContent = "";
     elements = [];
 
@@ -524,7 +536,7 @@
     updateSelection(0);
   }
 
-  function openEntry(item, disposition) {
+  function openEntry(item: OverlayResult, disposition: string): void {
     if (!item || !item.url) return;
     sendMessage({ type: "open", url: item.url, disposition })
       .catch(() => {})
@@ -533,13 +545,13 @@
       });
   }
 
-  function requestResults(query) {
+  function requestResults(query: string): Promise<OverlayResult[]> {
     return sendMessage({ type: "search", query, limit: UI_LIMIT })
-      .then((response) => response?.results || [])
+      .then((response) => (response as { results: OverlayResult[] })?.results || [])
       .catch(() => []);
   }
 
-  function scheduleSearch() {
+  function scheduleSearch(): void {
     if (debounceTimer) {
       clearTimeout(debounceTimer);
     }
@@ -551,7 +563,7 @@
     }, 50);
   }
 
-  function handleKeydown(event) {
+  function handleKeydown(event: KeyboardEvent): void {
     if (closed) return;
     if (event.key === "ArrowDown") {
       event.preventDefault();
@@ -585,18 +597,18 @@
     }
   }
 
-  function handleClick(event) {
+  function handleClick(event: MouseEvent): void {
     if (event.target === backdrop) {
       closeOverlay();
     }
   }
 
-  function closeOverlay() {
+  function closeOverlay(): void {
     if (closed) return;
     closed = true;
     overlay.remove();
-    const style = document.getElementById(STYLE_ID);
-    if (style) style.remove();
+    const styleEl = document.getElementById(STYLE_ID);
+    if (styleEl) styleEl.remove();
     document.documentElement.style.overflow = previousOverflow;
     window.removeEventListener("keydown", handleKeydown, true);
     overlay.removeEventListener("click", handleClick);
