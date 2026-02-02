@@ -70,16 +70,6 @@ jobs:
       - name: Build extension
         run: bun run build
 
-      - name: Submit to Firefox (listed)
-        run: |
-          bunx web-ext sign \
-            --channel=listed \
-            --amo-metadata=amo-metadata.json \
-            --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
-            --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
-            --timeout=15000 \
-            --source-dir dist || echo "Submitted to AMO (approval pending)"
-
       - name: Sign XPI (unlisted)
         run: |
           bunx web-ext sign \
@@ -93,6 +83,16 @@ jobs:
         with:
           name: extension-xpi
           path: web-ext-artifacts/*.xpi
+
+      - name: Submit to Firefox (listed)
+        run: |
+          bunx web-ext sign \
+            --channel=listed \
+            --amo-metadata=amo-metadata.json \
+            --api-key="${{ secrets.AMO_JWT_ISSUER }}" \
+            --api-secret="${{ secrets.AMO_JWT_SECRET }}" \
+            --timeout=15000 \
+            --source-dir dist || echo "Submitted to AMO (approval pending)"
 
   publish-chrome:
     needs: build
