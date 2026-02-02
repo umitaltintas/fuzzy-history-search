@@ -57,7 +57,7 @@ jobs:
           name: extension-zip
           path: "*.zip"
 
-  publish-firefox:
+  sign-xpi:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -83,6 +83,20 @@ jobs:
         with:
           name: extension-xpi
           path: web-ext-artifacts/*.xpi
+
+  publish-firefox:
+    needs: build
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install --frozen-lockfile
+
+      - name: Build extension
+        run: bun run build
 
       - name: Submit to Firefox (listed)
         run: |
@@ -140,8 +154,7 @@ jobs:
           echo "$PUBLISH"
 
   github-release:
-    needs: [publish-firefox, publish-chrome]
-    if: always() && needs.publish-firefox.result == 'success'
+    needs: [build, sign-xpi]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
