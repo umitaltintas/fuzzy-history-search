@@ -85,7 +85,7 @@ jobs:
           path: web-ext-artifacts/*.xpi
 
   publish-firefox:
-    needs: build
+    needs: sign-xpi
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
